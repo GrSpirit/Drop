@@ -12,13 +12,13 @@ import com.mygdx.game.Drop;
 /**
  * Created by vita on 11.11.14.
  */
-public class Bucket implements Disposable {
+public class Crow implements Disposable {
     public static int WIDTH = 64;
     public static int HEIGHT = 64;
     private Rectangle position;
     private Texture texture;
 
-    public Bucket (FileHandle file) {
+    public Crow(FileHandle file) {
         texture = new Texture(file);
         position = new Rectangle(Drop.WIDTH/2 - WIDTH/2, 20, WIDTH, HEIGHT);
     }

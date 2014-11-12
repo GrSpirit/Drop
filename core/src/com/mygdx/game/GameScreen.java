@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.model.Bucket;
+import com.mygdx.game.model.Crow;
 
 /**
  * Created by vita on 11.11.14.
@@ -16,7 +16,7 @@ public class GameScreen implements Screen {
     private final SpriteBatch batch;
     private OrthographicCamera camera;
 
-    private Bucket bucket;
+    private Crow crow;
 
     public GameScreen(final Drop game) {
         this.game = game;
@@ -25,26 +25,26 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Drop.WIDTH, Drop.HEIGHT);
 
-        bucket = new Bucket(Gdx.files.internal("crow.png"));
+        crow = new Crow(Gdx.files.internal("crow.png"));
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(0.2f, 0.2f, 0.7f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        bucket.draw(batch);
+        crow.draw(batch);
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            bucket.moveLeft();
+            crow.moveLeft();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            bucket.moveRight();
+            crow.moveRight();
         }
     }
 
