@@ -54,6 +54,10 @@ public class Crow implements Disposable {
         if (position.x > Drop.WIDTH - position.width) position.x = Drop.WIDTH - position.width;
     }
 
+    public boolean caughtCheese(Cheese cheese) {
+        return this.position.overlaps(cheese.getPosition());
+    }
+
     @Override
     public void dispose() {
         texture.dispose();
