@@ -1,6 +1,7 @@
 package com.mygdx.game.model;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,9 +18,11 @@ public class Crow implements Disposable {
     public static int HEIGHT = 64;
     private Rectangle position;
     private Texture texture;
+    private Sound sound;
 
     public Crow(FileHandle file) {
         texture = new Texture(file);
+        sound = Gdx.audio.newSound(Gdx.files.internal("crow1.wav"));
         position = new Rectangle(Drop.WIDTH/2 - WIDTH/2, 20, WIDTH, HEIGHT);
     }
 
@@ -60,6 +63,11 @@ public class Crow implements Disposable {
 
     @Override
     public void dispose() {
+        sound.dispose();
         texture.dispose();
+    }
+
+    public Sound getSound() {
+        return sound;
     }
 }

@@ -1,6 +1,7 @@
 package com.mygdx.game.model;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,9 +23,11 @@ public class CheeseFactory implements Disposable {
     private long spawnSpeed;
     private Array<Cheese> rain;
     private Texture texture;
+    private Sound dropSound;
 
     public CheeseFactory(FileHandle file) {
         texture = new Texture(file);
+        dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
         rain = new Array<Cheese>();
         startSpawnTime = TimeUtils.nanoTime();
         spawnSpeed = SPAWN_PERIOD;
@@ -37,8 +40,7 @@ public class CheeseFactory implements Disposable {
     }
 
     public void spawnCheese() {
-        spawnSpeed = (int)(SPAWN_PERIOD * (1 - (TimeUtils.nanoTime() - startSpawnTime) * 0.001 / SPAWN_PERIOD));
-        if (spawnSpeed < 0) spawnSpeed = 1000000;
+        spawnSpeed = SPAWN_PERIOD;
         if (TimeUtils.nanoTime() - lastSpawnTime > spawnSpeed) {
             makeCheese();
         }
@@ -54,12 +56,17 @@ public class CheeseFactory implements Disposable {
 
     public void draw(SpriteBatch batch) {
         for (Cheese cheese: rain) {
-            cheese.draw(batch, texture);
+            cheese.draw(batch, getTexture());
         }
+    }
+
+    public Sound getDropSound() {
+        return dropSound;
     }
 
     @Override
     public void dispose() {
+        dropSound.dispose();
         texture.dispose();
     }
 }

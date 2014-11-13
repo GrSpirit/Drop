@@ -67,8 +67,14 @@ public class GameScreen implements Screen {
         while (iterator.hasNext()) {
             Cheese cheese = iterator.next();
             cheese.drop();
-            if (cheese.isFallen()) iterator.remove();
-            if (crow.caughtCheese(cheese)) iterator.remove();
+            if (cheese.isFallen()) {
+                cheeses.getDropSound().play();
+                iterator.remove();
+            }
+            if (crow.caughtCheese(cheese)) {
+                iterator.remove();
+                crow.getSound().play();
+            }
         }
     }
 
