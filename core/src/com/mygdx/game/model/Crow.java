@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Drop;
 
 
@@ -16,17 +17,31 @@ import com.mygdx.game.Drop;
 public class Crow implements Disposable {
     public static int WIDTH = 64;
     public static int HEIGHT = 64;
+    private static double JUMP_ACCELERATION = 150;
+    private static double JUMP_IMPULSE = 200;
     private Rectangle position;
     private Texture texture;
     private Sound sound;
+
+    private long jumpStartTime;
+    private boolean isJumping;
 
     public Crow(FileHandle file) {
         texture = new Texture(file);
         sound = Gdx.audio.newSound(Gdx.files.internal("crow1.wav"));
         position = new Rectangle(Drop.WIDTH/2 - WIDTH/2, 20, WIDTH, HEIGHT);
+        isJumping = false;
     }
 
     public void draw(SpriteBatch batch) {
+        if (isJumping) {
+            double pos = jumpPosition(TimeUtils.nanoTime() - jumpStartTime);
+            if (pos <= 20) {
+                pos = 20;
+                isJumping = false;
+            }
+            position.y = (float)pos;
+        }
         batch.draw(getTexture(), position.x, position.y);
     }
 
@@ -59,6 +74,18 @@ public class Crow implements Disposable {
 
     public boolean caughtCheese(Cheese cheese) {
         return this.position.overlaps(cheese.getPosition());
+    }
+
+    public void jump() {
+        if (!isJumping) {
+            jumpStartTime = TimeUtils.nanoTime();
+            isJumping = true;
+        }
+    }
+
+    private double jumpPosition(long time) {
+        double dtime = (double)time / 1000000000.0;
+        return 20.0 + (JUMP_IMPULSE * dtime - JUMP_ACCELERATION * dtime * dtime / 2.0);
     }
 
     @Override

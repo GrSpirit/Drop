@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.model.Cheese;
@@ -21,6 +22,7 @@ public class GameScreen implements Screen {
     private final SpriteBatch batch;
     private OrthographicCamera camera;
 
+    private Texture ground;
     private Crow crow;
     CheeseFactory cheeses;
 
@@ -31,6 +33,7 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Drop.WIDTH, Drop.HEIGHT);
 
+        ground = new Texture(Gdx.files.internal("ground.png"));
         crow = new Crow(Gdx.files.internal("crow.png"));
         cheeses = new CheeseFactory(Gdx.files.internal("cheese.png"));
     }
@@ -43,6 +46,7 @@ public class GameScreen implements Screen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        batch.draw(ground, 0, 0, Drop.WIDTH, 20);
         crow.draw(batch);
         cheeses.draw(batch);
         batch.end();
@@ -53,6 +57,11 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             crow.moveRight();
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            crow.jump();
+            crow.getSound().play();
         }
 
         if (Gdx.input.isTouched()) {
@@ -107,5 +116,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         cheeses.dispose();
         crow.dispose();
+        ground.dispose();
     }
 }
