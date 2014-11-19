@@ -61,7 +61,6 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             crow.jump();
-            crow.getSound().play();
         }
 
         if (Gdx.input.isTouched()) {
@@ -80,9 +79,9 @@ public class GameScreen implements Screen {
                 cheeses.getDropSound().play();
                 iterator.remove();
             }
-            if (crow.caughtCheese(cheese)) {
-                iterator.remove();
+            else if (crow.caughtCheese(cheese)) {
                 crow.getSound().play();
+                iterator.remove();
             }
         }
     }

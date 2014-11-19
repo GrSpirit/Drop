@@ -78,6 +78,7 @@ public class Crow implements Disposable {
 
     public void jump() {
         if (!isJumping) {
+            this.getSound().play();
             jumpStartTime = TimeUtils.nanoTime();
             isJumping = true;
         }
